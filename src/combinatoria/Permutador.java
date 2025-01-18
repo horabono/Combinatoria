@@ -10,8 +10,8 @@ public class Permutador {
 		cuenta = 0;
 	}
 	
-	// genera una nueva permutación del vector
-	// retorna true si aún quedan permutaciones
+	// genera una nueva permutaciÃ³n del vector
+	// retorna true si aÃºn quedan permutaciones
 	// o false si las ha generado todas 
 	public boolean permutar() {
 		return permutar(0, vector.length);
