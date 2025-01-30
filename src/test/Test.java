@@ -31,6 +31,7 @@ public final class Test {
 				break;
 			}
 		}
+		System.out.println("\nFIN DEL PROGRAMA");
 	}
 
 	public static void main(String[] args) {

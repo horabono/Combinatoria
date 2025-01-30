@@ -3,7 +3,6 @@ package testGui.control;
 import java.util.ArrayList;
 import java.util.List;
 
-import testGui.gui.OperacionesListener;
 import testGui.gui.PanelMenu;
 
 public class ControlMenu extends SuperControl {
@@ -13,24 +12,14 @@ public class ControlMenu extends SuperControl {
 	public ControlMenu(PanelMenu panel) {
 		super(panel);
 		panel.setModel(modeloLista);
-		suscribirEventos();
 		cargarOperaciones();
-	}
-
-	private void suscribirEventos() {
-		((PanelMenu)panel).addOperacionesListener(new OperacionesListener() {
-			@Override
-			public void ejecutar() {
-				ejecutarOperacion();
-			}
-		});
 	}
 
 	protected void ejecutarOperacion() {
 		try {
 			validar();
 			for(ControlMenuListener listener : listeners) {
-				listener.aceptar(operacion);
+				listener.ejecutar(operacion);
 			}
 		} catch(RuntimeException ex) {
 			for(ControlMenuListener listener : listeners) {

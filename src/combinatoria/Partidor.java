@@ -1,18 +1,54 @@
 package combinatoria;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Partidor {
-	public final ArrayList<Particion> particiones = new ArrayList<Particion>();
+public class Partidor implements IOperacion {
+	private final List<Particion> particiones = new ArrayList<Particion>();
 	public final int numero;
 
 	public Partidor(int num) {
 		this.numero = num;
-		particiones.add(new Particion(num));
-		extender(0);
+		ejecutar();
 	}
 	
-	void extender(int i) {
+	@Override
+	public void ejecutar() {
+		particiones.add(new Particion(numero));
+		extender(0);		
+	}
+	
+	@Override
+	public void ordenar() {
+		boolean hayCambio;
+		int tam = particiones.size();
+		do {
+			hayCambio = false;
+			Particion p = particiones.get(0);
+			for(int i = 1; i  < tam; i++) {
+				Particion q = particiones.get(i);
+				if(p.compareTo(q) < 0) {
+					particiones.set(i-1, q);
+					particiones.set(i, p);
+					hayCambio = true;
+				} else {
+					p = q;
+				}
+			}
+			tam--;
+		} while(hayCambio);
+	}
+	
+	@Override
+	public List<int[]> getResultado() {
+		List<int[]> lista = new ArrayList<>();
+		for(Particion particion : particiones) {
+			lista.add(particion.toArray());
+		}
+		return lista;
+	}
+	
+	private void extender(int i) {
 		Particion par = particiones.get(i);
 		if(par.get(0) > 1) {
 			Particion nueva = par.clone();
@@ -24,7 +60,7 @@ public class Partidor {
 		}
 	}
 	
-	void agrupar(int i, int pos) {
+	private void agrupar(int i, int pos) {
 		Particion par = particiones.get(i);
 		if(pos < par.size() - 1) {
 			int anterior = par.get(pos-1);
@@ -54,33 +90,9 @@ public class Partidor {
 		return sb.toString() + "\n";
 	}
 	
-	public void ordenar() {
-		boolean hayCambio;
-		int tam = particiones.size();
-		do {
-			hayCambio = false;
-			Particion p = particiones.get(0);
-			for(int i = 1; i  < tam; i++) {
-				Particion q = particiones.get(i);
-				if(p.compareTo(q) < 0) {
-					particiones.set(i-1, q);
-					particiones.set(i, p);
-					hayCambio = true;
-				} else {
-					p = q;
-				}
-			}
-			tam--;
-		} while(hayCambio);
-	}
-	
-	public ArrayList<Particion> get() {
-		return particiones;
-	}
-	
-	public static ArrayList<int[]> partir(int num) {
-		ArrayList<Particion> particiones = new Partidor(num).particiones;
-		ArrayList<int[]> lista = new ArrayList<>();
+	public static List<int[]> partir(int num) {
+		List<Particion> particiones = new Partidor(num).particiones;
+		List<int[]> lista = new ArrayList<>();
 		for(Particion p : particiones) {
 			lista.add(p.toArray());
 		}

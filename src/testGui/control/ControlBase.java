@@ -35,32 +35,21 @@ public class ControlBase {
 		int y = (screenSize.height - frame.getHeight()) / 2;
 		frame.setLocation(x, y);
 	}
- 	
-	private void setTitle(String title) {
-		frame.setTitle(title);
-	}
 	
 	private void presentarPanelMenu() {
-		setTitle("Menú de operaciones");
+		frame.setTitle("Menú de operaciones");
 		PanelMenu panel = new PanelMenu();
 		presentarPanel(panel);
 		ControlMenu control = new ControlMenu(panel);
-		
-		control.addControlListener(new ControlListener() {
+		control.addControlPanelListener(new ControlPanelListener() {
 			@Override
 			public void cerrar() {
 				frame.dispose();
 			}
 		});
-		
 		control.addControlMenuListener(new ControlMenuListener() {
 			@Override
-			public void rechazar(String mensaje) {
-				showErrorMessage(panel, mensaje);
-			}
-			
-			@Override
-			public void aceptar(TipoOperacion operacion) {
+			public void ejecutar(TipoOperacion operacion) {
 				switch(operacion) {
 				case PERMUTACIONES:
 					presentarPanelPermutaciones();
@@ -76,72 +65,49 @@ public class ControlBase {
 					break;
 				}
 			}
+			@Override
+			public void rechazar(String mensaje) {
+				showErrorMessage(panel, mensaje);
+			}
 		});
 	}
 
 	private void presentarPanelPermutaciones() {
-		setTitle("Permutaciones");
+		frame.setTitle("Permutaciones");
 		PanelPermutaciones panel = new PanelPermutaciones();
 		presentarPanel(panel);
-		ControlPermutaciones control = new ControlPermutaciones(panel);
-		control.addControlListener(new ControlListener() {
-			@Override
-			public void cerrar() {
-				presentarPanelMenu();
-			}
-		});
-		control.addControlResultadosListener(new ControlResultadosListener() {
-			@Override
-			public void rechazar(String mensaje) {
-				showErrorMessage(panel, mensaje);
-			}
-		});
+		ControlOperaciones control = new ControlPermutaciones(panel);
+		suscribirEventos(panel, control);
 	}
 	
 	private void presentarPanelCombinaciones() {
-		setTitle("Combinaciones");
+		frame.setTitle("Combinaciones");
 		PanelCombinaciones panel = new PanelCombinaciones();
 		presentarPanel(panel);
-		ControlCombinaciones control = new ControlCombinaciones(panel);
-		control.addControlListener(new ControlListener() {
-			@Override
-			public void cerrar() {
-				presentarPanelMenu();
-			}
-		});
-		control.addControlResultadosListener(new ControlResultadosListener() {
-			@Override
-			public void rechazar(String mensaje) {
-				showErrorMessage(panel, mensaje);
-			}
-		});
+		ControlOperaciones control = new ControlCombinaciones(panel);
+		suscribirEventos(panel, control);
 	}
 	
+	// Para las variaciones se usa el mismo panel
+	// pero con diferente controlador
 	private void presentarPanelVariaciones() {
-		setTitle("Variaciones");
+		frame.setTitle("Variaciones");
 		PanelCombinaciones panel = new PanelCombinaciones();
 		presentarPanel(panel);
-		ControlVariaciones control = new ControlVariaciones(panel);
-		control.addControlListener(new ControlListener() {
-			@Override
-			public void cerrar() {
-				presentarPanelMenu();
-			}
-		});
-		control.addControlResultadosListener(new ControlResultadosListener() {
-			@Override
-			public void rechazar(String mensaje) {
-				showErrorMessage(panel, mensaje);
-			}
-		});
+		ControlOperaciones control = new ControlVariaciones(panel);
+		suscribirEventos(panel, control);
 	}
 
 	private void presentarPanelParticiones() {
-		setTitle("Particiones");
+		frame.setTitle("Particiones");
 		PanelParticiones panel = new PanelParticiones();
 		presentarPanel(panel);
-		ControlParticiones control = new ControlParticiones(panel);
-		control.addControlListener(new ControlListener() {
+		ControlOperaciones control = new ControlParticiones(panel);
+		suscribirEventos(panel, control);
+	}
+	
+	private void suscribirEventos(JPanel panel, ControlOperaciones control) {
+		control.addControlPanelListener(new ControlPanelListener() {
 			@Override
 			public void cerrar() {
 				presentarPanelMenu();

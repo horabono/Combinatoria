@@ -1,5 +1,5 @@
 package testGui.control;
 
-public interface ControlListener {
+public interface ControlPanelListener {
 	void cerrar();
 }

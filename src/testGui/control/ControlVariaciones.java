@@ -1,35 +1,17 @@
 package testGui.control;
 
-import java.util.ArrayList;
-
 import combinatoria.Variador;
 import testGui.gui.PanelCombinaciones;
+import testGui.gui.PanelOperaciones;
 
 public class ControlVariaciones extends ControlOperaciones {
-	private int subconjunto;
+	protected int subconjunto;
 	
-	public ControlVariaciones(PanelCombinaciones panel) {
+	public ControlVariaciones(PanelOperaciones panel) {
 		super(panel);
 	}
-	
-	protected void operar() {
-		modeloLista.clear();
-		int[] vector = new int[conjunto];
-		for(int i = 0; i < conjunto; i++) {
-			vector[i] = i+1;
-		}
-		ArrayList<int[]> lista = Variador.variar(vector, subconjunto);
-		int j = 0;
-		for(int[] a : lista) {
-			StringBuilder sb = new StringBuilder(String.format("[%3d] ", ++j));
-			for(int i : a) {
-				sb.append(String.format("%3d", i));
-			}
-			sb.append("\n");
-			modeloLista.add(sb);
-		}
-	}
 
+	@Override
 	protected void validar() {
 		String strCantidad = ((PanelCombinaciones)panel).getConjunto();
 		if(strCantidad.isEmpty()) {
@@ -45,7 +27,7 @@ public class ControlVariaciones extends ControlOperaciones {
 		}
 		String strSubconjunto = ((PanelCombinaciones)panel).getSubconjunto();
 		if(strSubconjunto.isEmpty()) {
-			throw new RuntimeException("Falta indicar la conjunto del subconjunto");
+			throw new RuntimeException("Falta indicar la cantidad del subconjunto");
 		}
 		try {
 			subconjunto = Integer.parseInt(strSubconjunto);
@@ -55,6 +37,16 @@ public class ControlVariaciones extends ControlOperaciones {
 		if(subconjunto < 1 || subconjunto > conjunto) {
 			throw new RuntimeException("No puede ser menor que 1 ni mayor que " + conjunto);
 		}
+	}
+	
+	@Override
+	protected void operar() {
+		int[] vector = new int[conjunto];
+		for(int i = 0; i < conjunto; i++) {
+			vector[i] = i+1;
+		}
+		operador = new Variador(vector, subconjunto);
+		mostrarResultado();
 	}
 
 }

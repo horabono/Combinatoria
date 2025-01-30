@@ -24,7 +24,8 @@ public abstract class PanelOperaciones extends SuperPanel implements IOperacione
 	protected final JLabel lblConjunto = new JLabel();
 	protected final JScrollPane scrollResultados = new JScrollPane();
 
-	private List<OperacionesListener> listeners = new ArrayList<>();
+	private List<OperacionesListener> operacionesListeners = new ArrayList<>();
+	private List<OrdenamientoListener> ordenamientoListeners = new ArrayList<>();
 
 	protected PanelOperaciones() {
 		super();
@@ -46,16 +47,30 @@ public abstract class PanelOperaciones extends SuperPanel implements IOperacione
 		lstResultados.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
 		scrollResultados.setViewportView(lstResultados);
+
+		JButton btnOrdenar = new JButton("Ordenar");
+		btnOrdenar.addActionListener(evt -> ordenar(evt));
+		panelBotones.add(btnOrdenar);
 	}
 
 	private void ejecutar(ActionEvent evt) {
-		for(OperacionesListener listener : listeners) {
+		for(OperacionesListener listener : operacionesListeners) {
 			listener.ejecutar();
 		}
 	}
 
+	private void ordenar(ActionEvent evt) {
+		for(OrdenamientoListener listener : ordenamientoListeners) {
+			listener.ordenar();
+		}
+	}
+
 	public void addOperacionesListener(OperacionesListener listener) {
-		listeners.add(listener);
+		operacionesListeners.add(listener);
+	}
+
+	public void addOrdenamientoListener(OrdenamientoListener listener) {
+		ordenamientoListeners.add((OrdenamientoListener) listener);
 	}
 	
 	@Override

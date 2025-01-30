@@ -1,5 +1,7 @@
 package test;
 
+import java.util.List;
+
 import combinatoria.Permutador;
 
 public class TestPermutador {
@@ -13,7 +15,7 @@ public class TestPermutador {
 			conjunto[i] = i+1;
 		}
 		Permutador p = new Permutador(conjunto);
-		System.out.println("\nPermutaciones de " + total + " elementos");
+		System.out.println("\nPermutaciones de " + total + " elementos tal como fueron generadas");
 		int j = 0;
 		do {
 			System.out.print(String.format("[%3d] ", ++j));
@@ -22,6 +24,19 @@ public class TestPermutador {
 			}
 			System.out.println();
 		} while(p.permutar());
+		
+		System.out.println("\nPermutaciones ordenadas de " + total + " elementos");
+		p.ejecutar();
+		p.ordenar();
+		List<int[]> resultado = p.getResultado();
+		j = 0;
+		for(int[] r : resultado) {
+			System.out.print(String.format("[%3d] ", ++j));
+			for(int i : r) {
+				System.out.print(String.format("%3d", i));
+			}
+			System.out.println();
+		}
 	}
 
 }

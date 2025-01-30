@@ -47,13 +47,10 @@ public class Particion implements Cloneable, Comparable<Particion> {
 	}
 	
 	public int[] toArray() {
-		int tam = 0;
-		for(int p : partes) {
-			tam += p;
-		}
-		return toArray(tam);
+		return toArray(partes.size());
 	}
 	
+	// Método raro, ¿se usa en alguna parte?
 	public int[] toArray(int tam) {
 		int[] vec = new int[tam];
 		int i = 0;

@@ -1,6 +1,6 @@
 package test;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import combinatoria.Combinador;
 
@@ -16,12 +16,25 @@ public class TestCombinador {
 		for(int i = 0; i < total; i++) {
 			conjunto[i] = i+1;
 		}
-		ArrayList<int[]> lista = Combinador.combinar(conjunto, parcial);
+		
+		List<int[]> lista = Combinador.combinar(conjunto, parcial);
 		System.out.println("\nCombinaciones de " + total + " elementos tomados de a " + parcial);
 		int j = 0;
 		for(int[] a : lista) {
 			System.out.print(String.format("[%3d] ", ++j));
 			for(int i : a) {
+				System.out.print(String.format("%3d", i));
+			}
+			System.out.println();
+		}
+		
+		Combinador c = new Combinador(conjunto, parcial);
+		System.out.println("\nCombinaciones ordenadas de " + total + " elementos tomados de a " + parcial);
+		c.ordenar();
+		j = 0;
+		for(int[] resultado : c.getResultado()) {
+			System.out.print(String.format("[%3d] ", ++j));
+			for(int i : resultado) {
 				System.out.print(String.format("%3d", i));
 			}
 			System.out.println();

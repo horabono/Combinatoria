@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import testGui.gui.ModeloLista;
+import testGui.gui.OperacionesListener;
 import testGui.gui.PanelListener;
 import testGui.gui.SuperPanel;
 
 public abstract class SuperControl {
 	protected final SuperPanel panel;
-	private final List<ControlListener> listeners = new ArrayList<>();
+	private final List<ControlPanelListener> listeners = new ArrayList<>();
 	protected final ModeloLista modeloLista = new ModeloLista();
 
 	public SuperControl(SuperPanel panel) {
@@ -24,16 +25,25 @@ public abstract class SuperControl {
 				cerrar();
 			}
 		});
+		
+		panel.addOperacionesListener(new OperacionesListener() {
+			@Override
+			public void ejecutar() {
+				ejecutarOperacion();
+			}
+		});
 	}
 	
-	protected void cerrar() {
-		for(ControlListener listener : listeners) {
+	private void cerrar() {
+		for(ControlPanelListener listener : listeners) {
 			listener.cerrar();
 		}
 	}
 	
-	public void addControlListener(ControlListener listener) {
+	public void addControlPanelListener(ControlPanelListener listener) {
 		listeners.add(listener);
 	}
+	
+	protected abstract void ejecutarOperacion(); 
 
 }
