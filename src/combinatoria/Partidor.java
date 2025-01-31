@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Partidor implements IOperacion {
-	private final List<Particion> particiones = new ArrayList<Particion>();
+	public final List<Particion> particiones = new ArrayList<Particion>();
 	public final int numero;
 
 	public Partidor(int num) {
